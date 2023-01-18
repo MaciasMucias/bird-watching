@@ -1,0 +1,1 @@
+C:\Users\01153134\.conda\envs\Sikorki\python.exe D:\Informatyka\Sikorki\download_movies.py

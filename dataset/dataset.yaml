@@ -1,0 +1,9 @@
+path: D:\Informatyka\Sikorki\dataset\datasets
+train: train
+val: val
+test: test
+
+names:
+  0: Modraszka
+  1: Bogatka
+  2: Wrobel
