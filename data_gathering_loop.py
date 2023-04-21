@@ -44,7 +44,6 @@ def main():
     video_out = None
     recording = False
     frames_left = 0
-    frame_count = 0
     if not cam.isOpened():
         raise RuntimeError("Camera not connected")
     prev_frame = prepare_frame(cam.read()[1])
@@ -65,13 +64,10 @@ def main():
                 path = create_filename()
                 print(f"New recording started. Name: {path}")
                 video_out = cv2.VideoWriter(path, *video_out_conf)
-                frame_count = 0
 
         if recording:
             video_out.write(current_frame)
             frames_left -= 1
-            frame_count += 1
-            #print(f"{frame_count=}")
             if not frames_left > 0:
                 print(f"Recording {path} has completed")
                 recording = False

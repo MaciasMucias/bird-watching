@@ -17,7 +17,7 @@ screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 dataset_path = local_path + r"\recordings"
 excluded_path = local_path + r"\excluded_files"
 large_path = local_path + r"\large_files"
-dict_path = local_path + r"\clips.json"
+dict_path = local_path + r"\clips_wroble_move.json"
 
 
 class safemutable:
@@ -65,13 +65,18 @@ if __name__ == '__main__':
     dataset = glob(dataset_path + r"\*")
     with open(dict_path, 'r') as f:
         clips = json.load(f)
+
+    clips_amount = 0
+    for clip in clips:
+        clips_amount += len(clips[clip])
+
     with safemutable(dict_path, clips):
         for path in dataset:
             large = False
             path_name = path[path.rfind('\\') + 1:]
             if path_name in clips:  # Already marked in a previous session
                 continue
-            print(path)
+            print(f"{path} {clips_amount}")
 
             fps = iio.immeta(path, plugin='pyav')['fps']
             ms = int(1000 // fps)
@@ -112,9 +117,11 @@ if __name__ == '__main__':
                         key = cv2.waitKey()
                         if key == ord(' '):
                             clips_mark.append(freeze_frame)
+                            clips_amount += 1
                             border(movie[freeze_frame], (255, 0, 0))
                             break
                         elif key == 27:
+                            key = None
                             break
                         elif key == ord('a'):
                             frame_offset = -1
@@ -128,11 +135,21 @@ if __name__ == '__main__':
                         elif freeze_frame > last_frame:
                             freeze_frame = last_frame
 
+                if key == 8:
+                    skip = True
+                    break
+
                 if key == 27:
                     finish = True
                     break
+
             if finish:
                 quit()
+
+            clips[path_name] = clips_mark
+
+            if skip:
+                continue
 
             finished_img = prepare_img(frame)
             border(finished_img, [0, 255, 0])
@@ -142,8 +159,6 @@ if __name__ == '__main__':
                 finish = True
 
             cv2.destroyWindow("Slice video")
-
-            clips[path_name] = clips_mark
 
             if finish:
                 quit()

@@ -1,0 +1,14 @@
+path: /mnt/d/Informatyka/Sikorki/dataset/roboflow_dataset
+train: train/images
+val: valid/images
+test: test/images
+
+nc: 3
+names: ['Bogatka', 'Modraszka', 'Wrobel']
+
+roboflow:
+  workspace: project
+  project: sikorki
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/project/sikorki/dataset/1

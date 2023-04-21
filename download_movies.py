@@ -8,6 +8,7 @@ password = "Skopioxv1"
 
 remote_recordings_root = "/home/karas/Desktop/Sikorki/recordings"
 local_recording_root = "D:/Informatyka/Sikorki/recordings"
+local_log_path = "D:/Informatyka/Sikorki/Error.log"
 while True:
     try:
         with Sftp(hostname=hostname, username=username, password=password) as server:
@@ -17,7 +18,7 @@ while True:
                 server.download(remote_path, local_path)
                 server.remove(remote_path)
     except Exception:
-        with open(r"D:\Informatyka\MalDB\Error.log", "a") as log:
+        with open(local_log_path, "a") as log:
             log.write(str(datetime.date.today()) + '\n')
             traceback.print_exc()
             traceback.print_exc(file=log)
